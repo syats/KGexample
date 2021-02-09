@@ -1,0 +1,204 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>None</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 1200px;
+            height: 800px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 1200px;
+            height: 800px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "Claude Shannon", "label": "Claude Shannon", "shape": "dot", "size": 10}, {"id": "John von Neumann", "label": "John von Neumann", "shape": "dot", "size": 10}, {"id": "Neil Sloane", "label": "Neil Sloane", "shape": "dot", "size": 10}, {"id": "Danny Hillis", "label": "Danny Hillis", "shape": "dot", "size": 10}, {"id": "Betty Shannon", "label": "Betty Shannon", "shape": "dot", "size": 10}, {"id": "Bert Sutherland", "label": "Bert Sutherland", "shape": "dot", "size": 10}, {"id": "Ivan Sutherland", "label": "Ivan Sutherland", "shape": "dot", "size": 10}, {"id": "Albert Einstein", "label": "Albert Einstein", "shape": "dot", "size": 10}, {"id": "Norbert Wiener", "label": "Norbert Wiener", "shape": "dot", "size": 10}, {"id": "Edward O. Thorp", "label": "Edward O. Thorp", "shape": "dot", "size": 10}, {"id": "Vannevar Bush", "label": "Vannevar Bush", "shape": "dot", "size": 10}, {"id": "Jimmy Soni", "label": "Jimmy Soni", "shape": "dot", "size": 10}, {"id": "Hendrik Wade Bode", "label": "Hendrik Wade Bode", "shape": "dot", "size": 10}, {"id": "Hermann Weyl", "label": "Hermann Weyl", "shape": "dot", "size": 10}, {"id": "Howard Gardner", "label": "Howard Gardner", "shape": "dot", "size": 10}, {"id": "Frank Lauren Hitchcock", "label": "Frank Lauren Hitchcock", "shape": "dot", "size": 10}, {"id": "Gregor Mendel", "label": "Gregor Mendel", "shape": "dot", "size": 10}, {"id": "Alan Turing", "label": "Alan Turing", "shape": "dot", "size": 10}, {"id": "James Gleick", "label": "James Gleick", "shape": "dot", "size": 10}, {"id": "Kurt G\u00f6del", "label": "Kurt G\u00f6del", "shape": "dot", "size": 10}, {"id": "Robert Fano", "label": "Robert Fano", "shape": "dot", "size": 10}, {"id": "Norman Levinson", "label": "Norman Levinson", "shape": "dot", "size": 10}, {"id": "Yuk-Wing Lee", "label": "Yuk-Wing Lee", "shape": "dot", "size": 10}, {"id": "Shikao Ikehara", "label": "Shikao Ikehara", "shape": "dot", "size": 10}, {"id": "Colin Cherry", "label": "Colin Cherry", "shape": "dot", "size": 10}, {"id": "John P. Costas (engineer)", "label": "John P. Costas (engineer)", "shape": "dot", "size": 10}, {"id": "Josiah Royce", "label": "Josiah Royce", "shape": "dot", "size": 10}, {"id": "Dorothy Walcott Weeks", "label": "Dorothy Walcott Weeks", "shape": "dot", "size": 10}, {"id": "Amar Bose", "label": "Amar Bose", "shape": "dot", "size": 10}, {"id": "George Zames", "label": "George Zames", "shape": "dot", "size": 10}, {"id": "David Hilbert", "label": "David Hilbert", "shape": "dot", "size": 10}, {"id": "Friederich Ignaz Mautner", "label": "Friederich Ignaz Mautner", "shape": "dot", "size": 10}, {"id": "Lip\u00f3t Fej\u00e9r", "label": "Lip\u00f3t Fej\u00e9r", "shape": "dot", "size": 10}, {"id": "ETH Zurich", "label": "ETH Zurich", "shape": "dot", "size": 10}, {"id": "Princeton University", "label": "Princeton University", "shape": "dot", "size": 10}, {"id": "Donald B. Gillies", "label": "Donald B. Gillies", "shape": "dot", "size": 10}, {"id": "L\u00e1szl\u00f3 R\u00e1tz", "label": "L\u00e1szl\u00f3 R\u00e1tz", "shape": "dot", "size": 10}, {"id": "E\u00f6tv\u00f6s Lor\u00e1nd University", "label": "E\u00f6tv\u00f6s Lor\u00e1nd University", "shape": "dot", "size": 10}, {"id": "Institute for Advanced Study", "label": "Institute for Advanced Study", "shape": "dot", "size": 10}, {"id": "Humboldt University of Berlin", "label": "Humboldt University of Berlin", "shape": "dot", "size": 10}, {"id": "University of G\u00f6ttingen", "label": "University of G\u00f6ttingen", "shape": "dot", "size": 10}, {"id": "Israel Halperin", "label": "Israel Halperin", "shape": "dot", "size": 10}, {"id": "Los Alamos Laboratory", "label": "Los Alamos Laboratory", "shape": "dot", "size": 10}, {"id": "Frederick Jelinek", "label": "Frederick Jelinek", "shape": "dot", "size": 10}, {"id": "Cornell University", "label": "Cornell University", "shape": "dot", "size": 10}, {"id": "AT\u0026T Labs", "label": "AT\u0026T Labs", "shape": "dot", "size": 10}, {"id": "AT\u0026T Bell Laboratories", "label": "AT\u0026T Bell Laboratories", "shape": "dot", "size": 10}, {"id": "Wolfgang Heinrich Johannes Fuchs", "label": "Wolfgang Heinrich Johannes Fuchs", "shape": "dot", "size": 10}, {"id": "University of Melbourne", "label": "University of Melbourne", "shape": "dot", "size": 10}, {"id": "Massachusetts Institute of Technology", "label": "Massachusetts Institute of Technology", "shape": "dot", "size": 10}, {"id": "Marvin Minsky", "label": "Marvin Minsky", "shape": "dot", "size": 10}, {"id": "Gerald Jay Sussman", "label": "Gerald Jay Sussman", "shape": "dot", "size": 10}, {"id": "Alfred Aeppli", "label": "Alfred Aeppli", "shape": "dot", "size": 10}, {"id": "Saunders Mac Lane", "label": "Saunders Mac Lane", "shape": "dot", "size": 10}, {"id": "Alexander Weinstein", "label": "Alexander Weinstein", "shape": "dot", "size": 10}, {"id": "Fritz Gassmann", "label": "Fritz Gassmann", "shape": "dot", "size": 10}, {"id": "Bell Labs", "label": "Bell Labs", "shape": "dot", "size": 10}, {"id": "Rensselaer Polytechnic Institute", "label": "Rensselaer Polytechnic Institute", "shape": "dot", "size": 10}, {"id": "Franklin C. Crow", "label": "Franklin C. Crow", "shape": "dot", "size": 10}, {"id": "Henri Gouraud (computer scientist)", "label": "Henri Gouraud (computer scientist)", "shape": "dot", "size": 10}, {"id": "James H. Clark", "label": "James H. Clark", "shape": "dot", "size": 10}, {"id": "MIT", "label": "MIT", "shape": "dot", "size": 10}, {"id": "Bui Tuong Phong", "label": "Bui Tuong Phong", "shape": "dot", "size": 10}, {"id": "John Warnock", "label": "John Warnock", "shape": "dot", "size": 10}, {"id": "Caltech", "label": "Caltech", "shape": "dot", "size": 10}, {"id": "Danny Cohen (engineer)", "label": "Danny Cohen (engineer)", "shape": "dot", "size": 10}, {"id": "Carnegie Institute of Technology", "label": "Carnegie Institute of Technology", "shape": "dot", "size": 10}, {"id": "University of Zurich", "label": "University of Zurich", "shape": "dot", "size": 10}, {"id": "Leo Szilard", "label": "Leo Szilard", "shape": "dot", "size": 10}, {"id": "Swiss Patent Office", "label": "Swiss Patent Office", "shape": "dot", "size": 10}, {"id": "Heinrich Friedrich Weber", "label": "Heinrich Friedrich Weber", "shape": "dot", "size": 10}, {"id": "Alfred Kleiner", "label": "Alfred Kleiner", "shape": "dot", "size": 10}, {"id": "Bunsaku Arakatsu", "label": "Bunsaku Arakatsu", "shape": "dot", "size": 10}, {"id": "Nathan Rosen", "label": "Nathan Rosen", "shape": "dot", "size": 10}, {"id": "Kaiser Wilhelm Institute", "label": "Kaiser Wilhelm Institute", "shape": "dot", "size": 10}, {"id": "German Physical Society", "label": "German Physical Society", "shape": "dot", "size": 10}, {"id": "Karl-Ferdinands-Universit\u00e4t", "label": "Karl-Ferdinands-Universit\u00e4t", "shape": "dot", "size": 10}, {"id": "University of Bern", "label": "University of Bern", "shape": "dot", "size": 10}, {"id": "Leiden University", "label": "Leiden University", "shape": "dot", "size": 10}, {"id": "Ernst G. Straus", "label": "Ernst G. Straus", "shape": "dot", "size": 10}, {"id": "Prussian Academy of Sciences", "label": "Prussian Academy of Sciences", "shape": "dot", "size": 10}, {"id": "University of Oxford", "label": "University of Oxford", "shape": "dot", "size": 10}, {"id": "Kurt Mendelssohn", "label": "Kurt Mendelssohn", "shape": "dot", "size": 10}, {"id": "Muhammad Raziuddin Siddiqui", "label": "Muhammad Raziuddin Siddiqui", "shape": "dot", "size": 10}, {"id": "Angus E. Taylor", "label": "Angus E. Taylor", "shape": "dot", "size": 10}, {"id": "University of California, Los Angeles", "label": "University of California, Los Angeles", "shape": "dot", "size": 10}, {"id": "New Mexico State University", "label": "New Mexico State University", "shape": "dot", "size": 10}, {"id": "University of California, Irvine", "label": "University of California, Irvine", "shape": "dot", "size": 10}, {"id": "Arthur Edwin Kennelly", "label": "Arthur Edwin Kennelly", "shape": "dot", "size": 10}, {"id": "Tufts College", "label": "Tufts College", "shape": "dot", "size": 10}, {"id": "Dugald C. Jackson", "label": "Dugald C. Jackson", "shape": "dot", "size": 10}, {"id": "M.S.", "label": "M.S.", "shape": "dot", "size": 10}, {"id": "Frederick Terman", "label": "Frederick Terman", "shape": "dot", "size": 10}, {"id": "Hans Hahn (mathematician)", "label": "Hans Hahn (mathematician)", "shape": "dot", "size": 10}, {"id": "University of Vienna", "label": "University of Vienna", "shape": "dot", "size": 10}, {"id": "Ernst Guillemin", "label": "Ernst Guillemin", "shape": "dot", "size": 10}, {"id": "Duke University", "label": "Duke University", "shape": "dot", "size": 10}, {"id": "Columbia University", "label": "Columbia University", "shape": "dot", "size": 10}, {"id": "Ohio State University", "label": "Ohio State University", "shape": "dot", "size": 10}, {"id": "Harvard College", "label": "Harvard College", "shape": "dot", "size": 10}, {"id": "Jerome Bruner", "label": "Jerome Bruner", "shape": "dot", "size": 10}, {"id": "Harvard University", "label": "Harvard University", "shape": "dot", "size": 10}, {"id": "North Dakota State University", "label": "North Dakota State University", "shape": "dot", "size": 10}, {"id": "Phillips Andover Academy", "label": "Phillips Andover Academy", "shape": "dot", "size": 10}, {"id": "Beatrice Worsley", "label": "Beatrice Worsley", "shape": "dot", "size": 10}, {"id": "Alonzo Church", "label": "Alonzo Church", "shape": "dot", "size": 10}, {"id": "University of Cambridge", "label": "University of Cambridge", "shape": "dot", "size": 10}, {"id": "Robin Gandy", "label": "Robin Gandy", "shape": "dot", "size": 10}, {"id": "Master of Arts", "label": "Master of Arts", "shape": "dot", "size": 10}, {"id": "Palack\u00fd University, Olomouc", "label": "Palack\u00fd University, Olomouc", "shape": "dot", "size": 10}, {"id": "Daniel Levitin", "label": "Daniel Levitin", "shape": "dot", "size": 10}, {"id": "John R. Pierce", "label": "John R. Pierce", "shape": "dot", "size": 10}]);
+        edges = new vis.DataSet([{"from": "Claude Shannon", "to": "John von Neumann", "weight": 1}, {"from": "Claude Shannon", "to": "Neil Sloane", "weight": 1}, {"from": "Claude Shannon", "label": "doctoralStudent", "to": "Danny Hillis", "weight": 1}, {"from": "Claude Shannon", "to": "Betty Shannon", "weight": 1}, {"from": "Claude Shannon", "label": "doctoralStudent", "to": "Bert Sutherland", "weight": 1}, {"from": "Claude Shannon", "label": "doctoralStudent", "to": "Ivan Sutherland", "weight": 1}, {"from": "Claude Shannon", "to": "Albert Einstein", "weight": 1}, {"from": "Claude Shannon", "to": "Norbert Wiener", "weight": 1}, {"from": "Claude Shannon", "to": "Edward O. Thorp", "weight": 1}, {"from": "Claude Shannon", "to": "Vannevar Bush", "weight": 1}, {"from": "Claude Shannon", "to": "Jimmy Soni", "weight": 1}, {"from": "Claude Shannon", "to": "Hendrik Wade Bode", "weight": 1}, {"from": "Claude Shannon", "to": "Hermann Weyl", "weight": 1}, {"from": "Claude Shannon", "to": "Howard Gardner", "weight": 1}, {"from": "Claude Shannon", "label": "doctoralAdvisor", "to": "Frank Lauren Hitchcock", "weight": 1}, {"from": "Claude Shannon", "to": "Gregor Mendel", "weight": 1}, {"from": "Claude Shannon", "to": "Alan Turing", "weight": 1}, {"from": "Claude Shannon", "to": "James Gleick", "weight": 1}, {"from": "Claude Shannon", "to": "Kurt G\u00f6del", "weight": 1}, {"from": "Claude Shannon", "to": "Robert Fano", "weight": 1}, {"from": "Norman Levinson", "label": "doctoralStudent", "to": "Norbert Wiener", "weight": 1}, {"from": "Norbert Wiener", "label": "doctoralStudent", "to": "Yuk-Wing Lee", "weight": 1}, {"from": "Norbert Wiener", "label": "doctoralStudent", "to": "Shikao Ikehara", "weight": 1}, {"from": "Norbert Wiener", "label": "academicAdvisor", "to": "Colin Cherry", "weight": 1}, {"from": "Norbert Wiener", "label": "doctoralAdvisor", "to": "John P. Costas (engineer)", "weight": 1}, {"from": "Norbert Wiener", "label": "academicAdvisor", "to": "Josiah Royce", "weight": 1}, {"from": "Norbert Wiener", "label": "doctoralAdvisor", "to": "Dorothy Walcott Weeks", "weight": 1}, {"from": "Norbert Wiener", "label": "doctoralStudent", "to": "Amar Bose", "weight": 1}, {"from": "Norbert Wiener", "label": "doctoralAdvisor", "to": "George Zames", "weight": 1}, {"from": "John von Neumann", "label": "academicAdvisor", "to": "David Hilbert", "weight": 1}, {"from": "John von Neumann", "label": "doctoralAdvisor", "to": "Friederich Ignaz Mautner", "weight": 1}, {"from": "John von Neumann", "label": "doctoralStudent", "to": "Lip\u00f3t Fej\u00e9r", "weight": 1}, {"from": "John von Neumann", "label": "almaMater", "to": "ETH Zurich", "weight": 1}, {"from": "John von Neumann", "label": "institution", "to": "Princeton University", "weight": 1}, {"from": "John von Neumann", "label": "doctoralAdvisor", "to": "Donald B. Gillies", "weight": 1}, {"from": "John von Neumann", "label": "academicAdvisor", "to": "L\u00e1szl\u00f3 R\u00e1tz", "weight": 1}, {"from": "John von Neumann", "label": "almaMater", "to": "E\u00f6tv\u00f6s Lor\u00e1nd University", "weight": 1}, {"from": "John von Neumann", "label": "institution", "to": "Institute for Advanced Study", "weight": 1}, {"from": "John von Neumann", "label": "institution", "to": "Humboldt University of Berlin", "weight": 1}, {"from": "John von Neumann", "label": "almaMater", "to": "University of G\u00f6ttingen", "weight": 1}, {"from": "John von Neumann", "label": "doctoralStudent", "to": "Israel Halperin", "weight": 1}, {"from": "John von Neumann", "label": "institution", "to": "Los Alamos Laboratory", "weight": 1}, {"from": "David Hilbert", "label": "doctoralAdvisor", "to": "Hermann Weyl", "weight": 1}, {"from": "Neil Sloane", "label": "doctoralAdvisor", "to": "Frederick Jelinek", "weight": 1}, {"from": "Neil Sloane", "label": "institution", "to": "Cornell University", "weight": 1}, {"from": "Neil Sloane", "label": "institution", "to": "AT\u0026T Labs", "weight": 1}, {"from": "Neil Sloane", "label": "institution", "to": "AT\u0026T Bell Laboratories", "weight": 1}, {"from": "Neil Sloane", "label": "doctoralAdvisor", "to": "Wolfgang Heinrich Johannes Fuchs", "weight": 1}, {"from": "Neil Sloane", "label": "almaMater", "to": "University of Melbourne", "weight": 1}, {"from": "Frederick Jelinek", "label": "doctoralAdvisor", "to": "Robert Fano", "weight": 1}, {"from": "Danny Hillis", "label": "almaMater", "to": "Massachusetts Institute of Technology", "weight": 1}, {"from": "Danny Hillis", "label": "doctoralStudent", "to": "Marvin Minsky", "weight": 1}, {"from": "Danny Hillis", "label": "doctoralAdvisor", "to": "Gerald Jay Sussman", "weight": 1}, {"from": "Hermann Weyl", "label": "institution", "to": "ETH Zurich", "weight": 1}, {"from": "Hermann Weyl", "label": "academicAdvisor", "to": "Alfred Aeppli", "weight": 1}, {"from": "Hermann Weyl", "label": "almaMater", "to": "University of G\u00f6ttingen", "weight": 1}, {"from": "Hermann Weyl", "label": "doctoralAdvisor", "to": "Saunders Mac Lane", "weight": 1}, {"from": "Hermann Weyl", "label": "doctoralStudent", "to": "Alexander Weinstein", "weight": 1}, {"from": "Hermann Weyl", "label": "institution", "to": "Institute for Advanced Study", "weight": 1}, {"from": "Hermann Weyl", "label": "doctoralAdvisor", "to": "Fritz Gassmann", "weight": 1}, {"from": "Betty Shannon", "label": "employer", "to": "Bell Labs", "weight": 1}, {"from": "Bert Sutherland", "label": "almaMater", "to": "Massachusetts Institute of Technology", "weight": 1}, {"from": "Bert Sutherland", "label": "almaMater", "to": "Rensselaer Polytechnic Institute", "weight": 1}, {"from": "Ivan Sutherland", "label": "doctoralStudent", "to": "Franklin C. Crow", "weight": 1}, {"from": "Ivan Sutherland", "label": "doctoralStudent", "to": "Henri Gouraud (computer scientist)", "weight": 1}, {"from": "Ivan Sutherland", "label": "doctoralAdvisor", "to": "James H. Clark", "weight": 1}, {"from": "Ivan Sutherland", "label": "almaMater", "to": "MIT", "weight": 1}, {"from": "Ivan Sutherland", "label": "doctoralStudent", "to": "Marvin Minsky", "weight": 1}, {"from": "Ivan Sutherland", "label": "doctoralAdvisor", "to": "Bui Tuong Phong", "weight": 1}, {"from": "Ivan Sutherland", "label": "doctoralStudent", "to": "John Warnock", "weight": 1}, {"from": "Ivan Sutherland", "label": "almaMater", "to": "Caltech", "weight": 1}, {"from": "Ivan Sutherland", "label": "doctoralStudent", "to": "Danny Cohen (engineer)", "weight": 1}, {"from": "Ivan Sutherland", "label": "almaMater", "to": "Carnegie Institute of Technology", "weight": 1}, {"from": "Massachusetts Institute of Technology", "label": "almaMater", "to": "Vannevar Bush", "weight": 1}, {"from": "Massachusetts Institute of Technology", "label": "institution", "to": "Frank Lauren Hitchcock", "weight": 1}, {"from": "Massachusetts Institute of Technology", "label": "institution", "to": "Robert Fano", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "University of Zurich", "weight": 1}, {"from": "Albert Einstein", "label": "academicAdvisor", "to": "Leo Szilard", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "Swiss Patent Office", "weight": 1}, {"from": "Albert Einstein", "label": "academicAdvisor", "to": "Heinrich Friedrich Weber", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "ETH Zurich", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "Caltech", "weight": 1}, {"from": "Albert Einstein", "label": "doctoralAdvisor", "to": "Alfred Kleiner", "weight": 1}, {"from": "Albert Einstein", "label": "academicAdvisor", "to": "Bunsaku Arakatsu", "weight": 1}, {"from": "Albert Einstein", "label": "academicAdvisor", "to": "Nathan Rosen", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "Kaiser Wilhelm Institute", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "Institute for Advanced Study", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "German Physical Society", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "Karl-Ferdinands-Universit\u00e4t", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "University of Bern", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "Humboldt University of Berlin", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "Leiden University", "weight": 1}, {"from": "Albert Einstein", "label": "academicAdvisor", "to": "Ernst G. Straus", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "Prussian Academy of Sciences", "weight": 1}, {"from": "Albert Einstein", "label": "institution", "to": "University of Oxford", "weight": 1}, {"from": "Albert Einstein", "label": "academicAdvisor", "to": "Kurt Mendelssohn", "weight": 1}, {"from": "Albert Einstein", "label": "doctoralAdvisor", "to": "Muhammad Raziuddin Siddiqui", "weight": 1}, {"from": "Edward O. Thorp", "label": "institution", "to": "MIT", "weight": 1}, {"from": "Edward O. Thorp", "label": "doctoralAdvisor", "to": "Angus E. Taylor", "weight": 1}, {"from": "Edward O. Thorp", "label": "almaMater", "to": "University of California, Los Angeles", "weight": 1}, {"from": "Edward O. Thorp", "label": "institution", "to": "New Mexico State University", "weight": 1}, {"from": "Edward O. Thorp", "label": "institution", "to": "University of California, Irvine", "weight": 1}, {"from": "Vannevar Bush", "label": "doctoralAdvisor", "to": "Arthur Edwin Kennelly", "weight": 1}, {"from": "Vannevar Bush", "label": "almaMater", "to": "Tufts College", "weight": 1}, {"from": "Vannevar Bush", "label": "doctoralAdvisor", "to": "Dugald C. Jackson", "weight": 1}, {"from": "Vannevar Bush", "label": "almaMater", "to": "M.S.", "weight": 1}, {"from": "Vannevar Bush", "label": "doctoralAdvisor", "to": "Frederick Terman", "weight": 1}, {"from": "Hans Hahn (mathematician)", "label": "doctoralAdvisor", "to": "Kurt G\u00f6del", "weight": 1}, {"from": "Kurt G\u00f6del", "label": "almaMater", "to": "University of Vienna", "weight": 1}, {"from": "Robert Fano", "label": "doctoralAdvisor", "to": "Ernst Guillemin", "weight": 1}, {"from": "Jimmy Soni", "label": "almaMater", "to": "Duke University", "weight": 1}, {"from": "Hendrik Wade Bode", "label": "almaMater", "to": "Columbia University", "weight": 1}, {"from": "Hendrik Wade Bode", "label": "almaMater", "to": "Ohio State University", "weight": 1}, {"from": "Howard Gardner", "label": "almaMater", "to": "Harvard College", "weight": 1}, {"from": "Howard Gardner", "label": "doctoralStudent", "to": "Jerome Bruner", "weight": 1}, {"from": "Harvard College", "label": "almaMater", "to": "James Gleick", "weight": 1}, {"from": "Frank Lauren Hitchcock", "label": "almaMater", "to": "Harvard University", "weight": 1}, {"from": "Frank Lauren Hitchcock", "label": "institution", "to": "North Dakota State University", "weight": 1}, {"from": "Frank Lauren Hitchcock", "label": "almaMater", "to": "Phillips Andover Academy", "weight": 1}, {"from": "Beatrice Worsley", "label": "doctoralStudent", "to": "Alan Turing", "weight": 1}, {"from": "Alan Turing", "label": "doctoralAdvisor", "to": "Alonzo Church", "weight": 1}, {"from": "Alan Turing", "label": "almaMater", "to": "University of Cambridge", "weight": 1}, {"from": "Alan Turing", "label": "doctoralStudent", "to": "Robin Gandy", "weight": 1}, {"from": "Alan Turing", "label": "almaMater", "to": "Princeton University", "weight": 1}, {"from": "Alan Turing", "label": "almaMater", "to": "Master of Arts", "weight": 1}, {"from": "Gregor Mendel", "label": "almaMater", "to": "University of Vienna", "weight": 1}, {"from": "Gregor Mendel", "label": "almaMater", "to": "Palack\u00fd University, Olomouc", "weight": 1}, {"from": "Daniel Levitin", "label": "academicAdvisor", "to": "John R. Pierce", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

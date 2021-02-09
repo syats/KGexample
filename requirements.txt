@@ -1,0 +1,5 @@
+rdflib
+sparqlwrapper
+networkx
+matplotlib
+pyvis
