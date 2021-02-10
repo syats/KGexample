@@ -57,8 +57,8 @@ sparql_client.setQuery(describe_query)
 g = sparql_client.query().convert()
 
 print(len(g),"triples in people around Claude Shannon")
-a = g.serialize(format="n3")
-with open("test.n3","wb") as fout:
+a = g.serialize(format='application/rdf+xml')
+with open("test.xml","wb") as fout:
     fout.write(a)
 
 
