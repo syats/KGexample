@@ -57,6 +57,9 @@ sparql_client.setQuery(describe_query)
 g = sparql_client.query().convert()
 
 print(len(g),"triples in people around Claude Shannon")
+a = g.serialize(format="n3")
+with open("test.n3","wb") as fout:
+    fout.write(a)
 
 
 predicates_of_interest = [rdflib.URIRef(x) for x in predicates_of_interest]
