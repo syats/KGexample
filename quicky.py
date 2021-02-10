@@ -68,4 +68,5 @@ subg = [(s,p,o) for s,p,o in g
         if p in predicates_of_interest
         or s==cent ]
 
-plotgraph(subg, filename="people_and_institutes.html")
+plotgraph(subg, filename="people_and_institutes.html",
+          title="People around "+clean(cent))
